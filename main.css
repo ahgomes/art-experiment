@@ -1,0 +1,17 @@
+* {
+    margin: 0;
+}
+
+body {
+    overflow: hidden;
+}
+
+canvas {
+    background: #000;
+    width: 100%;
+    height: 100vh;
+    /*image-rendering: optimizespeed;
+    image-rendering: pixelated;*/
+    cursor: none;
+    //filter: saturate(0.8) brightness(0.4);
+}
