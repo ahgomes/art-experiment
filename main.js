@@ -128,7 +128,21 @@ let dimentions = [
     '0.33 1.23 0.06 0.11 0.02 0.9'
 ]
 
+const img = {
+    cursor: image('images/cursor.png'),
+    left_eye: image('images/left_eye.png'),
+    right_eye: image('images/right_eye.png'),
+    blk_l: image('images/black_left_eye.png'),
+    blk_r: image('images/black_right_eye.png'),
+    bkgd: new Array(dimentions.length)
+}
+
 function obj_from_dim() {
+    for (let i = 0; i < img.bkgd.length; i++) {
+        let image_str = 'images/shape_' + (i < 9 ? '0' : '') + (i + 1) + '.png'
+        img.bkgd[i] = image(image_str)
+    }
+
     let comp_width = eye_width || canvas.width
     for (let i = 0; i < dimentions.length; i++) {
         let dim = dimentions[i].split(' ')
@@ -144,27 +158,11 @@ function obj_from_dim() {
     }
 }
 
-const img = {
-    cursor: image('images/cursor.png'),
-    left_eye: image('images/left_eye.png'),
-    right_eye: image('images/right_eye.png'),
-    blk_l: image('images/black_left_eye.png'),
-    blk_r: image('images/black_right_eye.png'),
-    bkgd: new Array(dimentions.length)
-}
-
-for (let i = 0; i < img.bkgd.length; i++) {
-    let image_str = 'images/shape_' + (i < 9 ? '0' : '') + (i + 1) + '.png'
-    img.bkgd[i] = image(image_str)
-}
-
-
 function image(src) {
     let img = new Image()
     img.src = src
     return img
 }
-
 
 function init() {
     if (!setup) {
@@ -205,12 +203,10 @@ function init() {
     cursor.x = mouse.x - cursor.width / 2
     cursor.y = mouse.y - cursor.height / 2
 
-
     left_eye.x = left_eye._start.x - Math.floor((mouse.x - _center) * 0.1)
     left_eye.y = left_eye._start.y + Math.floor((mouse.y - _middle) * 0.1)
     right_eye.x = right_eye._start.x - Math.floor((mouse.x - _center) * 0.2)
     right_eye.y = right_eye._start.y + Math.floor((mouse.y - _middle) * 0.1)
-
 
     for (let i = 0; i < bkgd_Objs.length; ++i) {
         let o = bkgd_Objs[i]
@@ -229,28 +225,21 @@ function animate() {
     for (let i = 0; i < bkgd_Objs.length; i++)
         bkgd_Objs[i].update()
 
+    c.shadowColor = 'rgba(0, 0, 0, 0.5)'
+    c.shadowOffsetX = -20
+    c.shadowBlur = 20
     left_eye.update()
     right_eye.update()
 
+    c.shadowColor = '#a82'
+    c.shadowOffsetX = -1
+    c.shadowBlur = 0
     c.globalCompositeOperation = 'difference';
     cursor.update()
 
 
     if (!setup) setup = true
     else init()
-}
-
-function thing() {
-    const b = c.createImageData(canvas.width, canvas.height);
-    shape_from_points(binaryToPoints(imageToBinary(b)))
-}
-
-function center_line() {
-    c.strokeStyle = '#fff'
-    c.beginPath()
-    c.moveTo(_center, 0)
-    c.lineTo(_center, canvas.height)
-    c.stroke()
 }
 
 function stop() {
